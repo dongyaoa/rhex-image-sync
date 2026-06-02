@@ -1,11 +1,14 @@
-name: Sync Rhex Image to Tencent Cloud
+name: Sync Rhex Image to Aliyun
 on:
-  workflow_dispatch:
+  workflow_dispatch: # 保留手动点击运行的按钮
+  schedule:
+    - cron: '*/30 * * * *' # 设置为每 30 分钟执行一次
+
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - name: Login to Tencent Cloud TCR
+      - name: Login to Aliyun
         run: docker login -u "${{ secrets.TCR_USER }}" -p "${{ secrets.TCR_PWD }}" crpi-igap1jgyarbenyfr.cn-hangzhou.personal.cr.aliyuncs.com
 
       - name: Pull, Tag and Push
