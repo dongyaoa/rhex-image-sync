@@ -10,9 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Login to GHCR
+      - name: Login to Tencent CCR
   run: |
-    echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+    echo "${{ secrets.TENCENT_PASSWORD }}" | docker login ccr.ccs.tencentyun.com -u ${{ secrets.TENCENT_USERNAME }} --password-stdin
 
       - name: Login to Tencent CCR
         run: |
