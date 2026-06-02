@@ -1,0 +1,32 @@
+name: Sync rhex to Tencent CCR
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */6 * * *"
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Login to GHCR
+        run: |
+          echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io \
+            --username ${{ github.actor }} --password-stdin
+
+      - name: Login to Tencent CCR
+        run: |
+          echo "${{ secrets.TENCENT_PASSWORD }}" | docker login ccr.ccs.tencentyun.com \
+            --username ${{ secrets.TENCENT_USERNAME }} --password-stdin
+
+      - name: Pull from GHCR
+        run: docker pull ghcr.io/lovedevpanda/rhex:latest
+
+      - name: Tag for CCR
+        run: |
+          docker tag ghcr.io/lovedevpanda/rhex:latest \
+                     ccr.ccs.tencentyun.com/rhex/rhex-app:latest
+
+      - name: Push to CCR
+        run: docker push ccr.ccs.tencentyun.com/rhex/rhex-app:latest
