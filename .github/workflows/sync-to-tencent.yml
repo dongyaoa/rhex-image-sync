@@ -1,6 +1,6 @@
 name: Sync rhex to Tencent CCR
 
-on:
+于:
   workflow_dispatch:
   schedule:
     - cron: "0 */6 * * *"
@@ -12,8 +12,8 @@ jobs:
     steps:
       - name: Login to GHCR
         run: |
-          echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io \
-            --username ${{ github.actor }} --password-stdin
+  echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io \
+    --username ${{ github.actor }} --password-stdin
 
       - name: Login to Tencent CCR
         run: |
