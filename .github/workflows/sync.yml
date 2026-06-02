@@ -1,0 +1,22 @@
+name: Sync Rhex Image to Tencent Cloud
+on:
+  workflow_dispatch: # 允许手动点击按钮触发更新
+  schedule:
+    - cron: '0 0 * * 1' # 也可以设置每周自动同步一次
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to Tencent Cloud TCR
+        run: docker login -u ${{ secrets.TCR_USER }} -p ${{ secrets.TCR_PWD }} ccr.ccs.tencentyun.com
+
+      - name: Pull, Tag and Push
+        run: |
+          # 1. 从官方拉取最新版
+          docker pull ghcr.io/lovedevpanda/rhex:latest
+          
+          # 2. 重新打标签为你腾讯云的地址 (注意替换 my-rhex-space)
+          docker tag ghcr.io/lovedevpanda/rhex:latest ccr.ccs.tencentyun.com/my-rhex-space/rhex:latest
+          
+          # 3. 推送到腾讯云
+          docker push ccr.ccs.tencentyun.com/my-rhex-space/rhex:latest
